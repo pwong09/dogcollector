@@ -72,3 +72,10 @@ class ToyDelete(DeleteView):
 def assoc_toy(request, dog_id, toy_id):
     Dog.objects.get(id=dog_id).toys.add(toy_id)
     return redirect('detail', dog_id=dog_id)
+
+def remove_toy(request, dog_id, toy_id):
+    dog = Dog.objects.get(id=dog_id)
+    toy = Toy.objects.get(id=toy_id)
+    toy.dog_set.remove(dog)
+    dog.toys.remove(toy)
+    return redirect('detail', dog_id=dog_id)

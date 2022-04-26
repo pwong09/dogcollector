@@ -63,6 +63,12 @@
                     A <span style="color: {{ toy.color }}">{{ toy.color }}</span> {{ toy.name }}
                     </span>
                 </div>
+                <div class="card-action">
+                    <form action="{% url 'remove_toy' dog.id toy.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn">Delete</button>
+                    </form>
+                </div>
             </div>
             {% endfor %}
         {% else %}
@@ -88,7 +94,7 @@
                 </div>
             {% endfor %}
         {% else %}
-            <h5>{{cat.name}} Already Has All Toys Available</h5>
+            <h5>{{dog.name}} already has all the toys available, spoiled dog.</h5>
         {% endif %}
     </div>
 </div>
