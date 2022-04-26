@@ -1,9 +1,9 @@
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.template import loader
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic import CreateView, DetailView, DeleteView, ListView, UpdateView
 
-from .models import Dog
+from .models import Dog, Toy
 
 class DogCreate(CreateView):
     model = Dog
@@ -17,7 +17,6 @@ class DogUpdate(UpdateView):
 class DogDelete(DeleteView):
     model = Dog
     success_url = '/dogs/'
-
 
 # Create your views here.
 def home(request):
@@ -36,3 +35,9 @@ def dogs_index(request):
 def dogs_detail(request, dog_id):
     dog = Dog.objects.get(id=dog_id)
     return render(request, 'dogs/detail.html', {'dog': dog})
+
+class ToyIndex(ListView):
+    model = Toy
+
+class ToyDetail(DetailView):
+    model = Toy

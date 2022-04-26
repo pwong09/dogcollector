@@ -21,15 +21,24 @@ class Dog(models.Model):
 class Toy(models.Model):
     name = models.CharField(max_length=50)
     color = models.CharField(max_length=20)
-    condition_choices = [
-        ('NW', 'new'),
-        ('LN', 'like new'),
-        ('UD', 'used'),
-        ('AW', 'awful')
+    NEW = 'new'
+    LIKENEW = 'like new'
+    USED = 'used'
+    AWFUL = 'awful'
+    conditions = [
+        (NEW, 'new'),
+        (LIKENEW, 'like new'),
+        (USED, 'used'),
+        (AWFUL, 'awful')
     ]
+    status = models.CharField(
+        max_length=10,
+        choices=conditions,
+        default=NEW,
+    )
 
     def __str__(self):
         return self.name
     
     def get_absolute_url(self):
-        return reverse('toy_detail', kwargs={'toy_id': self.id})
+        return reverse('toy_detail', kwargs={'pk': self.id})
