@@ -1,10 +1,13 @@
-document.addEventListener('DOMContentLoaded', function() {
-    var elems = document.querySelectorAll('select');
-    var instances = M.FormSelect.init(elems, options);
+const dateEl = document.getElementById('id_date');
+M.Datepicker.init(dateEl, {
+    format: 'yyyy-mm-dd',
+    defaultDate: new Date(),
+    setDefaultDate: true,
+    autoClose: true
 });
 
-  // Or with jQuery
+const selectEl = document.getElementById('id_meal');
+M.FormSelect.init(selectEl);
 
-//   $(document).ready(function(){
-//     $('select').formSelect();
-//   });
+const statusEl = document.getElementById('id_status');
+M.FormSelect.init(statusEl)
