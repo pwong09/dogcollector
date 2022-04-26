@@ -21,6 +21,12 @@ class Dog(models.Model):
 class Toy(models.Model):
     name = models.CharField(max_length=50)
     color = models.CharField(max_length=20)
+    condition_choices = [
+        ('NW', 'new'),
+        ('LN', 'like new'),
+        ('UD', 'used'),
+        ('AW', 'awful')
+    ]
 
     def __str__(self):
         return self.name
