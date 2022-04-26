@@ -5,7 +5,7 @@
 <h4>Color: {{ object.color }}</h4>
 <h4>Condition: {{ object.status }}</h4>
 
-<a href="">Edit</a>
-<a href="">Delete</a>
+<a href="{% url 'toy_update' object.id %}">Edit</a>
+<a href="{% url 'toy_delete' object.id %}">Delete</a>
 
 {% endblock %}

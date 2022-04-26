@@ -41,3 +41,15 @@ class ToyIndex(ListView):
 
 class ToyDetail(DetailView):
     model = Toy
+
+class ToyCreate(CreateView):
+    model = Toy
+    fields = '__all__'
+
+class ToyUpdate(UpdateView):
+    model = Toy
+    fields = ['color', 'status']
+
+class ToyDelete(DeleteView):
+    model = Toy
+    success_url = '/toys/'
