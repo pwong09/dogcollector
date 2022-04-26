@@ -1,8 +1,13 @@
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.template import loader
+from django.views.generic.edit import CreateView
 
 from .models import Dog
+
+class DogCreate(CreateView):
+    model = Dog
+    fields = '__all__'
 
 # Create your views here.
 def home(request):

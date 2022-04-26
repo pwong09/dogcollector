@@ -18,9 +18,9 @@
                     <li><a href="/" class="left brand-logo black-text">&nbsp;&nbsp;PW Dog Collector</a></li>
                 </ul>
                 <ul class="right">
-                    <li ><a href="/about" class="black-text">About</a></li>
-                    <li><a href="/dogs" class="black-text">View All Dogs</a></li>
-                    <li><a href="/dogs/add" class="black-text">Add A Dog</a></li>
+                    <li ><a href="{% url 'about' %}" class="black-text">About</a></li>
+                    <li><a href="{% url 'index' %}" class="black-text">View All Dogs</a></li>
+                    <li><a href="{% url 'dogs_create' %}" class="black-text">Add A Dog</a></li>
                 </ul>
             </div>
         </nav>
