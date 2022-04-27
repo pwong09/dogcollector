@@ -7,23 +7,23 @@
     </div>
 </div>
 
-{% for dog in dogs %}
+{% for d in dogs %}
 <div class="row">
     <div class="col s6 offset-s3">
         <div class="card blue-grey darken-1 hoverable">
             <div class="card-content white-text">
-                <img src="" alt="photo of {{ dog.name }}" class="circle responsive-img"> 
-                <span class="card-title">{{ dog.name }}</span>
-                <p>Breed: {{ dog.breed }}</p>
-                <p>Description: {{ dog.description }}</p>
-                {% if dog.age > 0 %}
-                <p>Age: {{ dog.age }}</p>
+                <img src="{{ d.url }}" alt="photo of {{ d.name }}" class="circle responsive-img"> 
+                <span class="card-title">{{ d.name }}</span>
+                <p>Breed: {{ d.breed }}</p>
+                <p>Description: {{ d.description }}</p>
+                {% if d.age > 0 %}
+                <p>Age: {{ d.age }}</p>
                 {% else %}
                 <p>Age: Puppy</p>
                 {% endif %}
             </div>
             <div class="card-action center-align">
-                <a class="amber accent-3 btn black-text" href="{% url 'detail' dog.id %}">Learn More</a>
+                <a class="amber accent-3 btn black-text" href="{% url 'detail' d.id %}">Learn More</a>
                 {% comment %} <a href="#">This is a link</a> {% endcomment %}
             </div>
         </div>
