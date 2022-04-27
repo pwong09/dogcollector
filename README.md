@@ -2,6 +2,7 @@
 My first solo Django project collecting cute dogs - namely dogs I've fostered.
 
 ### Technologies Used
+- AWS S3
 - Django
 - Materialize
 - PostgreSQL
