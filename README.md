@@ -2,11 +2,10 @@
 My first solo Django project collecting cute dogs - namely dogs I've fostered.
 
 ### Technologies Used
-- CSS
 - Django
 - Materialize
 - PostgreSQL
-- Python
+- Python3
 
 ### Screenshots
 ![view all dogs](/screenshots/dogs_index.png)
