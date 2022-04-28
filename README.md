@@ -5,7 +5,7 @@ My first solo Django project collecting cute dogs - namely dogs I've fostered.
 - AWS S3
 - Django
 - Materialize
-- PostgreSQL
+- PostgreSQL - currently set to your local database
 - Python3
 
 ### Screenshots
