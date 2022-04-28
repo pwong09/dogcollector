@@ -1,6 +1,10 @@
 import boto3
 import uuid
 
+from django.contrib.auth import login
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.template import loader
@@ -13,16 +17,20 @@ S3_BASE_URL = 'https://s3-us-west-1.amazonaws.com/'
 BUCKET = 'pwcollection'
 
 
-class DogCreate(CreateView):
+class DogCreate(LoginRequiredMixin, CreateView):
     model = Dog
-    fields = '__all__'
+    fields = ['name', 'breed', 'description', 'age']
 
-class DogUpdate(UpdateView):
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+class DogUpdate(LoginRequiredMixin, UpdateView):
     model = Dog
     fields = ['breed', 'description', 'age']
 
 
-class DogDelete(DeleteView):
+class DogDelete(LoginRequiredMixin, DeleteView):
     model = Dog
     success_url = '/dogs/'
 
@@ -33,13 +41,15 @@ def home(request):
 def about(request):
     return render(request, 'about.html')
 
+@login_required
 def dogs_index(request):
-    dogs = Dog.objects.all()
+    dogs = Dog.objects.filter(user=request.user)
     context = {
         'dogs': dogs
     }
     return render(request, 'dogs/index.html', context)
 
+@login_required
 def dogs_detail(request, dog_id):
     dog = Dog.objects.get(id=dog_id)
     feeding_form = FeedingForm()
@@ -58,28 +68,30 @@ def add_feeding(request, dog_id):
         new_feeding.save()
     return redirect('detail', dog_id=dog_id)
 
-class ToyIndex(ListView):
+class ToyIndex(LoginRequiredMixin, ListView):
     model = Toy
 
-class ToyDetail(DetailView):
+class ToyDetail(LoginRequiredMixin, DetailView):
     model = Toy
 
-class ToyCreate(CreateView):
+class ToyCreate(LoginRequiredMixin, CreateView):
     model = Toy
     fields = '__all__'
 
-class ToyUpdate(UpdateView):
+class ToyUpdate(LoginRequiredMixin, UpdateView):
     model = Toy
     fields = ['color', 'status']
 
-class ToyDelete(DeleteView):
+class ToyDelete(LoginRequiredMixin, DeleteView):
     model = Toy
     success_url = '/toys/'
 
+@login_required
 def assoc_toy(request, dog_id, toy_id):
     Dog.objects.get(id=dog_id).toys.add(toy_id)
     return redirect('detail', dog_id=dog_id)
 
+@login_required
 def remove_toy(request, dog_id, toy_id):
     dog = Dog.objects.get(id=dog_id)
     toy = Toy.objects.get(id=toy_id)
@@ -87,6 +99,7 @@ def remove_toy(request, dog_id, toy_id):
     dog.toys.remove(toy)
     return redirect('detail', dog_id=dog_id)
 
+@login_required
 def add_photo(request, dog_id):
     photo_file = request.FILES.get('photo-file', None)
     if photo_file:
@@ -99,3 +112,20 @@ def add_photo(request, dog_id):
         except:
             print('An error occured when uploading your file to S3')
     return redirect('detail', dog_id=dog_id)
+
+def signup(request):
+    error_message = ''
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect('index')
+        else:
+            error_message = 'Invalid sign up - try again!'
+    form = UserCreationForm()
+    context = {
+        'form': form,
+        'error_message': error_message
+    }
+    return render(request, 'registration/signup.html', context)
