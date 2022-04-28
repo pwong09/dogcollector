@@ -1,5 +1,6 @@
 from datetime import date
 from django.contrib import admin
+from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
@@ -42,6 +43,7 @@ class Dog(models.Model):
     description = models.CharField(max_length=255)
     age = models.DecimalField(max_digits = 4, decimal_places = 1)
     toys = models.ManyToManyField(Toy)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
@@ -76,3 +78,4 @@ class Photo(models.Model):
 
     def __str__(self):
         return f"Photo for dog_id: {self.dog_id}"
+
