@@ -79,3 +79,7 @@ class Photo(models.Model):
     def __str__(self):
         return f"Photo for dog_id: {self.dog_id}"
 
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
