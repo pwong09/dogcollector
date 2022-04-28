@@ -20,11 +20,12 @@
                 <ul class="right">
                     <li ><a href="{% url 'about' %}" class="black-text">About</a></li>
                     {% if user.is_authenticated %}
-                        <li>Hi {{ user.username }}</li>
+                        
                         <li><a href="{% url 'index' %}" class="black-text">View All Dogs</a></li>
                         <li><a href="{% url 'dogs_create' %}" class="black-text">Add A Dog</a></li>
                         <li><a href="{% url 'toy_list' %}" class="black-text">View All Toys</a></li>
                         <li><a href="{% url 'toy_create' %}" class="black-text">Add A Toy</a></li>
+                        <li><a href="/user" class="black-text">Profile</a></li>
                         <li><a href="{% url 'logout' %}">Log Out</a></li>
                     {% else %}
                         <li><a href="{% url 'signup' %}">Sign Up</a></li>

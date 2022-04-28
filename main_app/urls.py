@@ -23,4 +23,6 @@ urlpatterns = [
     path('toys/<int:pk>/delete/', views.ToyDelete.as_view(), name='toy_delete'),
     # User
     path('accounts/signup/', views.signup, name='signup'),
+    # Profile
+    path('user', views.userpage, name='userpage'),
 ]

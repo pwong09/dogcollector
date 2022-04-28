@@ -5,13 +5,14 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.template import loader
 from django.views.generic import CreateView, DetailView, DeleteView, ListView, UpdateView
 
-from .forms import FeedingForm
-from .models import Dog, Toy, Photo
+from .forms import FeedingForm, UserForm, ProfileForm
+from .models import Dog, Toy, Photo, Profile
 
 S3_BASE_URL = 'https://s3-us-west-1.amazonaws.com/'
 BUCKET = 'pwcollection'
@@ -86,6 +87,8 @@ class ToyDelete(LoginRequiredMixin, DeleteView):
     model = Toy
     success_url = '/toys/'
 
+
+
 @login_required
 def assoc_toy(request, dog_id, toy_id):
     Dog.objects.get(id=dog_id).toys.add(toy_id)
@@ -129,3 +132,13 @@ def signup(request):
         'error_message': error_message
     }
     return render(request, 'registration/signup.html', context)
+
+def userpage(request):
+    user_form = UserForm(instance=request.user)
+    profile_form = ProfileForm(instance=request.user.profile)
+    context = {
+        'user': request.user,
+        'user_form': user_form,
+        'profile_form': profile_form
+    }
+    return render(request, 'user.html', context)
