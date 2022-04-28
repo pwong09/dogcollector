@@ -6,12 +6,14 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
+from django.core.exceptions import PermissionDenied
+from django.forms.models import inlineformset_factory
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.template import loader
 from django.views.generic import CreateView, DetailView, DeleteView, ListView, UpdateView
 
-from .forms import FeedingForm, UserForm, ProfileForm
+from .forms import FeedingForm, UserForm
 from .models import Dog, Toy, Photo, Profile
 
 S3_BASE_URL = 'https://s3-us-west-1.amazonaws.com/'
@@ -135,10 +137,37 @@ def signup(request):
 
 def userpage(request):
     user_form = UserForm(instance=request.user)
-    profile_form = ProfileForm(instance=request.user.profile)
     context = {
         'user': request.user,
-        'user_form': user_form,
-        'profile_form': profile_form
+        'user_form': user_form
     }
     return render(request, 'user.html', context)
+
+@login_required
+def edit_user(request, user_id):
+    user = User.objects.get(id=user_id)
+    user_form = UserForm(instance=user)
+    ProfileInlineFormset = inlineformset_factory(User, Profile, fields=['first_name', 'last_name'])
+    formset = ProfileInlineFormset(instance=user)
+
+    if request.user.isauthenticated() and request.user.id == user.id:
+        if request.method == "POST":
+            user_form = UserForm(request.POST, request.FILES, instance=user)
+            formset = ProfileInlineFormset(request.POST, request.FILES, instance=user)
+
+            if user_form.is_valid():
+                created_user = user_form.save(commit=False)
+                formset = ProfileInlineFormset(request.POST, request.FILES, instance=user)
+            
+                if formset.is_valid():
+                    created_user.save()
+                    formset.save()
+                    return redirect('/accounts/profile/')
+        context = {
+            'noodle': user_id,
+            'noodle_form': user_form,
+            'formset': formset
+        }
+        return render(request, 'account/account_update.html', context)
+    else:
+        raise PermissionDenied

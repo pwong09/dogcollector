@@ -25,4 +25,5 @@ urlpatterns = [
     path('accounts/signup/', views.signup, name='signup'),
     # Profile
     path('user', views.userpage, name='userpage'),
+    path('accounts/update/<int:user_id>/', views.edit_user, name='account_update')
 ]

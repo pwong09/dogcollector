@@ -9,9 +9,4 @@ class FeedingForm(ModelForm):
 class UserForm(ModelForm):
     class Meta:
         model = User
-        fields = ['username', 'first_name', 'last_name']
-
-class ProfileForm(ModelForm):
-    class Meta:
-        model = Profile
         fields = ['first_name', 'last_name']
